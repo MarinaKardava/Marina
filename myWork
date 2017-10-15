@@ -1,6 +1,9 @@
 %scaner_name Lexer
 %codes_type lexem_code
-%ident_name Id
+%codes 
+Id
+%ident_name 
+Id
 %token_fields
 "usigned __int128 int_val; __float128 float_val;"
 %class_members
@@ -15,7 +18,7 @@ Elif, Endif, For,
 In, While, Repeat,
 Until, Exit, Continue,
 Return, Read, Print,
-Kw_var,Kw_string,Kw_float,
+Kw_string,Kw_float,
 Kw_int,Kw_char, Kw_void,
 Kw_bool,
 
@@ -26,39 +29,46 @@ GEQ, Nequal, FDiv,
 Lor, LNor, LNot,
 LAnd, LNand, LXor,
 LNXor, BXor, BNXor,
-BXor, BNXor, BAnd,
+Bor, BNor, BAnd,
 BNAnd, LShift, RShift,
 BNot, Pow, FPow,
-Assign, endif_block, begin_block,
-cond_op, after_label,elem_mass,
-end_expr, enum, hesh,
-toch2
+Assign, Lendif_block, Rendif_block,
+Lbegin_block, Rbegin_block, Dim_size,
+cond_op, Semicolon, Comma,
+after_label, Lelem_mass, Relem_mass,
+Colon, APlus, AMinus, 
+AMul, ADiv, AFDiv, 
+APow, AFPow, AMod,
+ABAnd, ABNAnd, ALShift,
+ARShift, ABor, ABNor,
+ABXor, ABNXor, ALor,
+ALNor, ALXor, ALNXor,
+ALAnd, ALNAnd 
+
 
 %idents {[:Letter:]|[:letter:]|_}{[:Letter:]|[:letter:]|_|[:digits:]}
 %keywords
-"if" : If, "else" : Else, "цел" : Kw_int, "перем": Kw_var, "вещ" : Kw_float,"лог": Kw_bool,
+"если" : If, "иначе" : Else, "цел" : Kw_int, "перем": Var, "вещ" : Kw_float,"лог": Kw_bool,
 "симв" : Kw_char, "строка" :Kw_string,
 "ничто" : Kw_void, "массив" : Array, "истина": True, "ложь": False,"прото": Proto,
-"функ": Func, "конст": Const, "инес": Elif, "всё": Endif,"для": For,
+"функ": Func, "конст": Const, "то" : To, "инес": Elif, "всё": Endif,"для": For,
 "из": In,"пока": While, "повторяй": Repeat, "покуда": Until, "выйди": Exit,
 "продолжи": Continue, "возврат": Return, "ввод": Read, "вывод":Print
 
 %delimiters
-"=" : Equal, "+" : Plus, "-" : Minus, "*" : Mul, "/" : Div, "%": Mod,
-"<": LT, ">":GT, "<=": LEQ, ">=":GEQ, "!=":Nequal,"/.": FPiv, "||": Lor,
+"=" : Equal, "+" : Plus, "-" : Minus, "*" : Mul, "/" : Div, "%" : Mod,
+"<": LT, ">":GT, "<=": LEQ, ">=":GEQ, "!=":Nequal,"/.": FDiv, "||": Lor,
 "!||": LNor, "!":LNot, "&&": LAnd, "!&&": LNAnd, "^^": LXor,
 "!^^": LNXor,"^":BXor,"~^":BNXor,"|":Bor, "~|":BNor,
-"&":BAnd, "~&":BNAnd, "«":LSnift,"»":RSnift,"~":BNot, "**":Pow, "**.":FPow,":=":Assing, 
-"{}":endif_block, "()":begin_block, "#":hesh, "?":cond_op,";":end_expr, ",":enum, 
-"::":after_label,"[]":elem_mass,":":toch2
+"&":BAnd, "~&":BNAnd, "<<":LShift,">>":RShift,"~":BNot, "**":Pow, "**.":FPow,":=":Assign, 
+"{":Lendif_block,"}":Rendif_block, "(":Lbegin_block, ")":Rbegin_block,"#":Dim_size, "?":cond_op,";":Semicolon, ",":Comma, 
+"::":after_label,"[":Lelem_mass,"]":Relem_mass,":":Colon, "+:=" : APlus, "-:=" : AMinus, "*:=" : AMul, "/:=" : ADiv, "/.:=" : AFDiv,
+"**:=" : APow, "**.:=" : AFPow, "%:=" : AMod,
+"&:=" : ABAnd, "~&:=" : ABNAnd, "<<:=" : ALShift, ">>:=" : ARShift, "|:=" : ABor, "~|:=" : ABNor, "^:=" : ABXor, 
+"~^:=" : ABNXor, "||:=" : ALor, "!||:=" : ALNor, "^^:=" : ALXor, "!^^:=" : ALNXor, "&&:=" : ALAnd, "!&&:=" ALNAnd
 
-%strings {"([:ndq:]$write|""$write)*"}   
+%strings "buffer.clean();":"token.code=(buffer.length()==1)?Char:String;"
+{"([:ndg:]|"")*"}
+{"([:ndq:]$write|""$write)*"}   
 
-%numbers "val_ = 0; token.code = Number;" : "token.int_val = val_;"
-  %action addHexDigit "val_ = (val_ << 4) + digitToInt(ch);"
-  %action addDecDigit "val_ = val_ * 10 + digitToInt(ch);"
-  %action addBinDigit "val_ = (val_ << 1) + digitToInt(ch);"
-  %action addOctDigit "val_ = (val_ << 3) + digitToInt(ch);"
-  
-  {0(x|X)[:xdigits:]$addHexDigit+ | [:digits:]$addDecDigit+ | 
-   0(b|B)[:bdigits:]$addBinDigit+ | 0(o|O)[:odigits:]$addOctDigit+} 
+%numbers
