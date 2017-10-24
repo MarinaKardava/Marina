@@ -7,7 +7,7 @@ Id
 %token_fields
 "usigned __int128 int_val; __float128 float_val;"
 %class_members
-"unsigned __int128 int_part; __float128 frac_part; ssize_t power; ssize_t sign"
+"unsigned __int128 int_part; __float128 frac_part; ssize_t power; ssize_t sign; bool is_float;"
 %codes
 String, If, Float,
 Else, Var, Int,
@@ -32,10 +32,10 @@ LNXor, BXor, BNXor,
 Bor, BNor, BAnd,
 BNAnd, LShift, RShift,
 BNot, Pow, FPow,
-Assign, Lendif_block, Rendif_block,
-Lbegin_block, Rbegin_block, Dim_size,
+Assign, Openif_block, Endif_block,
+Open_begin_block, Close_begin_block, Dim_size,
 cond_op, Semicolon, Comma,
-after_label, Lelem_mass, Relem_mass,
+after_label, Open_elem_mass, Close_elem_mass,
 Colon, APlus, AMinus, 
 AMul, ADiv, AFDiv, 
 APow, AFPow, AMod,
@@ -47,6 +47,10 @@ ALAnd, ALNAnd
 
 
 %idents {[:Letter:]|[:letter:]|_}{[:Letter:]|[:letter:]|_|[:digits:]}
+
+
+%impl_additions size_t digit2int(char32_t)
+
 %keywords
 "если" : If, "иначе" : Else, "цел" : Kw_int, "перем": Var, "вещ" : Kw_float,"лог": Kw_bool,
 "симв" : Kw_char, "строка" :Kw_string,
@@ -61,14 +65,13 @@ ALAnd, ALNAnd
 "!||": LNor, "!":LNot, "&&": LAnd, "!&&": LNAnd, "^^": LXor,
 "!^^": LNXor,"^":BXor,"~^":BNXor,"|":Bor, "~|":BNor,
 "&":BAnd, "~&":BNAnd, "<<":LShift,">>":RShift,"~":BNot, "**":Pow, "**.":FPow,":=":Assign, 
-"{":Lendif_block,"}":Rendif_block, "(":Lbegin_block, ")":Rbegin_block,"#":Dim_size, "?":cond_op,";":Semicolon, ",":Comma, 
-"::":after_label,"[":Lelem_mass,"]":Relem_mass,":":Colon, "+:=" : APlus, "-:=" : AMinus, "*:=" : AMul, "/:=" : ADiv, "/.:=" : AFDiv,
+"{":Openif_block,"}":Endif_block, "(":Open_begin_block, ")":Close_begin_block,"#":Dim_size, "?":cond_op,";":Semicolon, ",":Comma, 
+"::":after_label,"[":Open_elem_mass,"]":Close_elem_mass,":":Colon, "+:=" : APlus, "-:=" : AMinus, "*:=" : AMul, "/:=" : ADiv, "/.:=" : AFDiv,
 "**:=" : APow, "**.:=" : AFPow, "%:=" : AMod,
 "&:=" : ABAnd, "~&:=" : ABNAnd, "<<:=" : ALShift, ">>:=" : ARShift, "|:=" : ABor, "~|:=" : ABNor, "^:=" : ABXor, 
 "~^:=" : ABNXor, "||:=" : ALor, "!||:=" : ALNor, "^^:=" : ALXor, "!^^:=" : ALNXor, "&&:=" : ALAnd, "!&&:=" ALNAnd
 
 %strings "buffer.clean();":"token.code=(buffer.length()==1)?Char:String;"
-{"([:ndg:]|"")*"}
 {"([:ndq:]$write|""$write)*"}   
 
 %numbers
