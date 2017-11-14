@@ -7,7 +7,7 @@ Id
 %token_fields
 "usigned __int128 int_val; __float128 float_val;"
 %class_members
-"unsigned __int128 int_part; __float128 frac_part; ssize_t power; ssize_t sign; bool is_float;"
+"unsigned __int128 int_part; __float128 frac_part; ssize_t power; ssize_t sign; bool is_float"
 %codes
 String, If, Float,
 Else, Var, Int,
@@ -32,10 +32,10 @@ LNXor, BXor, BNXor,
 Bor, BNor, BAnd,
 BNAnd, LShift, RShift,
 BNot, Pow, FPow,
-Assign, Openif_block, Endif_block,
-Open_begin_block, Close_begin_block, Dim_size,
+Assign, Open_body_func, Close_body_func,
+Open_list_of_names, Close_list_of_names, Dim_size,
 cond_op, Semicolon, Comma,
-after_label, Open_elem_mass, Close_elem_mass,
+after_label, Open_list_of_expr, Close_list_of_expr,
 Colon, APlus, AMinus, 
 AMul, ADiv, AFDiv, 
 APow, AFPow, AMod,
@@ -65,8 +65,8 @@ ALAnd, ALNAnd
 "!||": LNor, "!":LNot, "&&": LAnd, "!&&": LNAnd, "^^": LXor,
 "!^^": LNXor,"^":BXor,"~^":BNXor,"|":Bor, "~|":BNor,
 "&":BAnd, "~&":BNAnd, "<<":LShift,">>":RShift,"~":BNot, "**":Pow, "**.":FPow,":=":Assign, 
-"{":Openif_block,"}":Endif_block, "(":Open_begin_block, ")":Close_begin_block,"#":Dim_size, "?":cond_op,";":Semicolon, ",":Comma, 
-"::":after_label,"[":Open_elem_mass,"]":Close_elem_mass,":":Colon, "+:=" : APlus, "-:=" : AMinus, "*:=" : AMul, "/:=" : ADiv, "/.:=" : AFDiv,
+"{":Open_body_func,"}":Close_body_func, "(":Open_list_of_names, ")":Close_list_of_names,"#":Dim_size, "?":cond_op,";":Semicolon, ",":Comma, 
+"::":after_label,"[":Open_list_of_expr,"]":Close_list_of_expr,":":Colon, "+:=" : APlus, "-:=" : AMinus, "*:=" : AMul, "/:=" : ADiv, "/.:=" : AFDiv,
 "**:=" : APow, "**.:=" : AFPow, "%:=" : AMod,
 "&:=" : ABAnd, "~&:=" : ABNAnd, "<<:=" : ALShift, ">>:=" : ARShift, "|:=" : ABor, "~|:=" : ABNor, "^:=" : ABXor, 
 "~^:=" : ABNXor, "||:=" : ALor, "!||:=" : ALNor, "^^:=" : ALXor, "!^^:=" : ALNXor, "&&:=" : ALAnd, "!&&:=" ALNAnd
@@ -75,3 +75,14 @@ ALAnd, ALNAnd
 {"([:ndq:]$write|""$write)*"}   
 
 %numbers
+"int_part= 0;frac_part=1; token.code = Number;" : "token.int_val = int_part;"
+
+  %action addDecDigit "frac_part=frac_part*10+digit2int(ch)"
+
+  %action addHexDigit "int_part = (int_part << 4) + digitToInt(ch);"
+  %action addDecDigit "int_part = int_part * 10 + digitToInt(ch);"
+  %action addBinDigit "int_part = (int_part<< 1) + digitToInt(ch);"
+  %action addOctDigit "int_part = (int_part<< 3) + digitToInt(ch);"
+  {0(x|X)[:xdigits:]$addHexDigit+ | [:digits:]$addDecDigit+ |0(b|B)[:bdigits:]$addBinDigit+|0(o|O)[:odigits:]$addOctDigit+}|
+{[:digits:](?[digits:])*(.[:digits:]+((E|e)(+|-)?[:digits]+)?)}
+ 
