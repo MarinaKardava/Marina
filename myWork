@@ -1,7 +1,8 @@
 %scaner_name Lexer
 %codes_type lexem_code
 
-%ident_name Id
+%ident_name 
+Id
 
 %token_fields
 "unsigned __int128 int_val;__float128 float_val;"
