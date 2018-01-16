@@ -63,7 +63,7 @@ enum lexem_code : unsigned short {
     ARShift,    ABor,       ABNor,       
     ABXor,      ABNXor,     ALor,        
     ALNor,      ALXor,      ALNXor,      
-    ALAnd,      ALNAnd,     弅弅
+    ALAnd,      ALNAnd,     꿊꿊
 };
 
 struct Lexem_info{

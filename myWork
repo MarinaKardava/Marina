@@ -1,6 +1,7 @@
 %scaner_name Lexer
 %codes_type lexem_code
 
+
 %ident_name 
 Id
 
