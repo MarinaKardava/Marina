@@ -7,6 +7,7 @@
 #include <string>
 #include <set>
 
+
 char32_t* Char_trie::get_cstring(size_t idx){
     size_t id_len = node_buffer[idx].path_len;
     char32_t* p = new char32_t[id_len + 1];
