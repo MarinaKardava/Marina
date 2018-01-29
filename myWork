@@ -15,40 +15,42 @@ __float128 build_float();"
 "unsigned __int128 int_val; __float128 float_val;"
 
 %codes
-Equal, Plus, Minus,
-Mul, Div, Mod,
-LT, GT, LEQ,
-GEQ, Nequal, FDiv,
-Lor, LNor, LNot,
-LAnd, LNand, LXor,
-LNXor, BXor, BNXor,
-Bor, BNor, BAnd,
-BNAnd, LShift, RShift,
-BNot, Pow, FPow,
-Assign, Open_func, Close_func,
-Open_round, Close_round, Dim_size,
-cond_op, Semicolon, Comma,
-after_label, Open_square, Close_square,
-Colon, APlus, AMinus, 
-AMul, ADiv, AFDiv, 
-APow, AFPow, AMod,
-ABAnd, ABNAnd, ALShift,
-ARShift, ABor, ABNor,
-ABXor, ABNXor, ALor,
-ALNor, ALXor, ALNXor,
-ALAnd, ALNAnd,
 
-String, If,         Float,
-Else,   Var,        Int,
-Bool,   Char,       Void,
-Array,  True,       False,
-Proto,  Func,       Const,
-Elif,   Endif,      For,
-In,     While,      Repeat,
-Until,  Exit,       Continue,
-Return, Read,       Print,
-Kw_bool,Kw_string,  Kw_float,
-Kw_int,	Kw_char,    Kw_void
+Colon,                Semicolon,               Comma,
+Cond_op,              Lor,                     LNor,
+LXor,                 LNXor,                   LAnd, 
+LNAnd,                LNot,                    LT,
+GT,                   LEG,                     GEQ,
+Equal,                Nequal,                  Bor,
+BNor,                 BXor,                    BNXor, 
+BAnd,                 BNAnd,                   LShift,
+Rshift,               BNot,                    Plus,
+Minus,                Dim_size,                Open_round,
+Close_round,          Open_square,             Close_square,
+Openif_block,         Endif_block,             After_lable,
+ColonAssign,          Mul,                     Div,
+Module,               FDiv,                    Pow,
+FPow,                 PlusColonAssign,         MinusColonAssign,
+MultColonAssign,      SlashColonAssign,        SlashDotColonAssign,
+TwoMultColonAssign,   TwoMultDotColonAssign,   PercColonAssign,
+AmpColonAssign,       TilAmpColonAssign,       LShiftColAssign,
+RShiftColAssign,      PipColAssign,            TilPipColAssign,
+CirColAssign,         TilCirColAssign,         TwoPipColAssign,
+NTwoPipColAssign,     TwoCirColAssign,         NTwoCirColAssign,
+TwoColAssign,         NTwoColAssign,
+
+String,    If,         Float,
+Else,      Var,        Int,
+Bool,      Char,       Void,
+Array,     True,       False,
+Proto,     Func,       Const,
+Elif,      Endif,      For,
+In,        While,      Repeat,
+Until,     Exit,       Continue,
+Return,    Read,       Print,
+Then,      Kw_bool,    Kw_string,
+Kw_float,  Kw_int,     Kw_char,
+Kw_void
 
 
 %impl_additions "
@@ -66,19 +68,29 @@ num = num*powq(10, sign_of_degree*exponent);
 return num;}"
 
 %keywords
-"if" : If, "else" : Else, "int" : Kw_int, "var": Var, "float" : Kw_float,"bool":Kw_bool,
-"char" : Kw_char, "string" :Kw_string, "void" : Kw_void, "array" : Array, "true": True,
-"false": False,"proto": Proto,"func": Func, "const": Const, "elif": Elif, "endif": Endif,
-"for": For,"in": In,"while": While, "repeat": Repeat, "until": Until, "exit": Exit,
-"continue": Continue, "return": Return, "read": Read, "print":Print
+"ввод" : Read, "вещ" : Kw_float, "возврат" : Return, "всё" : Endif, "вывод" : Print,
+"выйди" : Exit, "для" : For, "если" : If, "из" : In, "иначе" : Else, "инес" : Elif,
+"истина" : True, "конст" : Const, "лог" : Kw_bool, "ложь" : False, "массив" : Array,
+"ничто" : Kw_void, "перем" : Var, "повторяй" : Repeat, "пока" : While, "покуда" : Until,
+"продолжи" : Continue, "прото" : Proto, "симв" : Kw_char, "строка" : Kw_string,
+"то" : Then, "функ" : Func, "цел" : Kw_int
 
 %delimiters
-"=" : Equal, "+" : Plus, "-" : Minus, "*" : Mul, "/" : Div, "%": Mod,"<": LT, ">":GT, 
-"<=": LEQ, ">=":GEQ, "!=":Nequal,"/.": FDiv, "||": Lor,"!||": LNor, "!":LNot, "&&": LAnd, 
-"!&&": LNAnd, "^^": LXor,"!^^": LNXor,"^":BXor,"~^":BNXor,"|":Bor, "~|":BNor,"&":BAnd, 
-"~&":BNAnd, "<<":LShift,">>":RShift,"~":BNot, "**":Pow, "**.":FPow,":=":Assign, 
-"{":Open_func,"}":Close_func, "(":Open_round, ")":Close_round,"#":Dim_size, "?":cond_op,";":Semicolon,",":Comma,"::":after_label,"[":Open_square,"]":Close_square,
-":":Colon
+":" : Colon, ";" : Semicolon, "," : Comma, "?" : Cond_op, "||" : Lor, "!||" : LNor,
+"^^" : LXor, "!^^" : LNXor, "&&" : LAnd, "!&&" : LNAnd, "!" : LNot, "<" : LT, ">" : GT,
+"<=" : LEQ, ">=" : GEQ, "=" : Equal, "!=" : Nequal, "|" : Bor, "~|" : BNor, "^" : BXor,
+"~^" : BNXor, "&" : BAnd, "~&" : BNAnd, "<<" : LShift, ">>" : RShift, "~" : BNot,
+"+" : Plus, "-" : Minus, "#" : Dim_size, "(" : Open_round, ")" : Close_round,
+"[" : Open_square, "]" : Close_square, "{" : Openif_block, "}" : Endif_block,
+"::" : After_label, ":=" : ColonAssign, "*" : Mul, "/" : Div, "%" : Module, "/.": FDiv,
+"**":Pow, "**.":FPow, "+:=" : PlusColonAssign, "-:=" : MinusColonAssign,
+"*:=" : MultColonAssign, "/:=" : SlashColonAssign, "/.:=" : SlashDotColonAssign, 
+"**:=" : TwoMultColonAssign, "**.:=" : TwoMultDotColonAssign, "%:=" : PercColonAssign,
+"&:=" : AmpColonAssign, "~&:=" : TilAmpColonAssign, "<<:=" : LShiftColAssign,
+">>:=" : RShiftColAssign, "|:=" : PipColAssign, "~|:=" : TilPipColAssign,
+"^:=" : CirColAssign,"~^:=" : TilCirColAssign, "||:=" : TwoPipColAssign,
+"!||:=" : NTwoPipColAssign, "^^:=" : TwoCirColAssign, "!^^:=" : NTwoCirColAssign,
+"&&:=" : TwoColAssign, "!&&:=" : NTwoColAssign
 
 %numbers "int_value = 0; fract_part = 0; exponent = 0;sign_of_degree=1; num_of_digits = 0; is_float = false" : "if(is_float)
 {
