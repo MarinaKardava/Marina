@@ -7,47 +7,48 @@
 #include <string>"
 
 enum lexemcodes : unsigned short {
-    None,                 Unknown,            Colon,             
-    Semicolon,            Comma,              Cond_op,           
-    Lor,                  LNor,               LXor,              
-    LNXor,                LAnd,               LNAnd,             
-    LNot,                 LT,                 GT,                
-    LEG,                  GEQ,                Equal,             
-    Nequal,               Bor,                BNor,              
-    BXor,                 BNXor,              BAnd,              
-    BNAnd,                LShift,             Rshift,            
-    BNot,                 Plus,               Minus,             
-    Dim_size,             Open_round,         Close_round,       
-    Open_square,          Close_square,       Openif_block,      
-    Endif_block,          After_lable,        ColonAssign,       
-    Mul,                  Div,                Module,            
-    FDiv,                 Pow,                FPow,              
-    PlusColonAssign,      MinusColonAssign,   MultColonAssign,   
-    SlashColonAssign,     SlashDotColonAssign,TwoMultColonAssign,
-    TwoMultDotColonAssign,PercColonAssign,    AmpColonAssign,    
-    TilAmpColonAssign,    LShiftColAssign,    RShiftColAssign,   
-    PipColAssign,         TilPipColAssign,    CirColAssign,      
-    TilCirColAssign,      TwoPipColAssign,    NTwoPipColAssign,  
-    TwoCirColAssign,      NTwoCirColAssign,   TwoColAssign,      
-    NTwoColAssign,        String,             If,                
-    Float,                Else,               Var,               
-    Int,                  Bool,               Char,              
-    Void,                 Array,              True,              
-    False,                Proto,              Func,              
-    Const,                Elif,               Endif,             
-    For,                  In,                 While,             
-    Repeat,               Until,              Exit,              
-    Continue,             Return,             Read,              
-    Print,                Then,               Kw_bool,           
-    Kw_string,            Kw_float,           Kw_int,            
-    Kw_char,              Kw_void,            ,                  
-    ,                     
+    None,             Unknown,     Colon,           
+    Semicolon,        Comma,       Cond_op,         
+    Lor,              LNor,        LXor,            
+    LNXor,            LAnd,        LNAnd,           
+    LNot,             LT,          GT,              
+    LEQ,              GEQ,         Equal,           
+    Nequal,           Bor,         BNor,            
+    BXor,             BNXor,       BAnd,            
+    BNAnd,            LShift,      RShift,          
+    BNot,             Plus,        Minus,           
+    Dim_size,         Open_round,  Close_round,     
+    Open_square,      Close_square,Open_cur_bracket,
+    Close_cur_bracket,After_label, Assign,          
+    Mul,              Div,         Module,          
+    FDiv,             Pow,         FPow,            
+    PlusAssign,       MinusAssign, MultAssign,      
+    DivAssign,        FDivAssign,  PowAssign,       
+    FPowAssign,       ModuleAssign,BAndAssign,      
+    BNAndAssign,      LShiftAssign,RShiftAssign,    
+    BorAssign,        BNorAssign,  BXorAssign,      
+    BNXorAssign,      LorAssign,   LNorAssign,      
+    LXorAssign,       LNXorAssign, LAndAssign,      
+    LNAndAssign,      String,      If,              
+    Float,            Else,        Var,             
+    Int,              Bool,        Char,            
+    Void,             Array,       True,            
+    False,            Proto,       Func,            
+    Const,            Elif,        Endif,           
+    For,              In,          While,           
+    Repeat,           Until,       Exit,            
+    Continue,         Return,      Read,            
+    Print,            Then,        Kw_bool,         
+    Kw_string,        Kw_float,    Kw_int,          
+    Kw_char,          Kw_void
 };
 
 struct Lexem_info{
     lexemcodes code;
     union{
         size_t    ident_index;
+        size_t    string_index;
+        char32_t  c;
 unsigned __int128 int_val; __float128 float_val;
     };
 };
@@ -63,7 +64,7 @@ public:
 private:
     enum Automaton_name{
         A_start,     A_unknown, A_idKeyword, 
-        A_delimiter, A_number
+        A_delimiter, A_number,  A_string
     };
     Automaton_name automaton; /* current automaton */
 
@@ -82,11 +83,11 @@ private:
     /* Lexeme processing functions: */
     bool start_proc();     bool unknown_proc();   
     bool idkeyword_proc(); bool delimiter_proc(); 
-    bool number_proc();
+    bool number_proc();    bool string_proc();
     /* functions for performing actions in case of an
      * unexpected end of the token */
     void none_proc();            void unknown_final_proc();   
     void idkeyword_final_proc(); void delimiter_final_proc(); 
-    void number_final_proc();
+    void number_final_proc();    void string_final_proc();
 };
 #endif

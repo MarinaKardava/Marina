@@ -16,28 +16,28 @@ __float128 build_float();"
 
 %codes
 
-Colon,                Semicolon,               Comma,
-Cond_op,              Lor,                     LNor,
-LXor,                 LNXor,                   LAnd, 
-LNAnd,                LNot,                    LT,
-GT,                   LEG,                     GEQ,
-Equal,                Nequal,                  Bor,
-BNor,                 BXor,                    BNXor, 
-BAnd,                 BNAnd,                   LShift,
-Rshift,               BNot,                    Plus,
-Minus,                Dim_size,                Open_round,
-Close_round,          Open_square,             Close_square,
-Openif_block,         Endif_block,             After_lable,
-ColonAssign,          Mul,                     Div,
-Module,               FDiv,                    Pow,
-FPow,                 PlusColonAssign,         MinusColonAssign,
-MultColonAssign,      SlashColonAssign,        SlashDotColonAssign,
-TwoMultColonAssign,   TwoMultDotColonAssign,   PercColonAssign,
-AmpColonAssign,       TilAmpColonAssign,       LShiftColAssign,
-RShiftColAssign,      PipColAssign,            TilPipColAssign,
-CirColAssign,         TilCirColAssign,         TwoPipColAssign,
-NTwoPipColAssign,     TwoCirColAssign,         NTwoCirColAssign,
-TwoColAssign,         NTwoColAssign,
+Colon,                 Semicolon,              Comma,
+Cond_op,               Lor,                    LNor,
+LXor,                  LNXor,                  LAnd,
+LNAnd,                 LNot,                   LT,
+GT,                    LEQ,                    GEQ,
+Equal,                 Nequal,                 Bor,
+BNor,                  BXor,                   BNXor, 
+BAnd,                  BNAnd,                  LShift,
+RShift,                BNot,                   Plus,
+Minus,                 Dim_size,               Open_round,
+Close_round,           Open_square,            Close_square,
+Open_cur_bracket,      Close_cur_bracket,      After_label,
+Assign,                Mul,                    Div,
+Module,                FDiv,                   Pow,
+FPow,                  PlusAssign,             MinusAssign,
+MultAssign,            DivAssign,              FDivAssign,
+PowAssign,             FPowAssign,             ModuleAssign,
+BAndAssign,            BNAndAssign,            LShiftAssign,
+RShiftAssign,          BorAssign,              BNorAssign,
+BXorAssign,            BNXorAssign,            LorAssign,
+LNorAssign,            LXorAssign,             LNXorAssign,
+LAndAssign,            LNAndAssign,
 
 String,    If,         Float,
 Else,      Var,        Int,
@@ -53,20 +53,6 @@ Kw_float,  Kw_int,     Kw_char,
 Kw_void
 
 
-%impl_additions "
-#include <quadmath> 
-size_t digit2int(char32_t ch)
-{
-size_t v =  ch - U'0';
-return (v<=9)? v:(v&0b1101'1111) - 7;
-};
-__float128  Lexer::build_float()
-{
-__float128 num;                                                                               
-num = int_value + fract_part*powq(10, num_of_digits);
-num = num*powq(10, sign_of_degree*exponent);
-return num;}"
-
 %keywords
 "ввод" : Read, "вещ" : Kw_float, "возврат" : Return, "всё" : Endif, "вывод" : Print,
 "выйди" : Exit, "для" : For, "если" : If, "из" : In, "иначе" : Else, "инес" : Elif,
@@ -81,16 +67,34 @@ return num;}"
 "<=" : LEQ, ">=" : GEQ, "=" : Equal, "!=" : Nequal, "|" : Bor, "~|" : BNor, "^" : BXor,
 "~^" : BNXor, "&" : BAnd, "~&" : BNAnd, "<<" : LShift, ">>" : RShift, "~" : BNot,
 "+" : Plus, "-" : Minus, "#" : Dim_size, "(" : Open_round, ")" : Close_round,
-"[" : Open_square, "]" : Close_square, "{" : Openif_block, "}" : Endif_block,
-"::" : After_label, ":=" : ColonAssign, "*" : Mul, "/" : Div, "%" : Module, "/.": FDiv,
-"**":Pow, "**.":FPow, "+:=" : PlusColonAssign, "-:=" : MinusColonAssign,
-"*:=" : MultColonAssign, "/:=" : SlashColonAssign, "/.:=" : SlashDotColonAssign, 
-"**:=" : TwoMultColonAssign, "**.:=" : TwoMultDotColonAssign, "%:=" : PercColonAssign,
-"&:=" : AmpColonAssign, "~&:=" : TilAmpColonAssign, "<<:=" : LShiftColAssign,
-">>:=" : RShiftColAssign, "|:=" : PipColAssign, "~|:=" : TilPipColAssign,
-"^:=" : CirColAssign,"~^:=" : TilCirColAssign, "||:=" : TwoPipColAssign,
-"!||:=" : NTwoPipColAssign, "^^:=" : TwoCirColAssign, "!^^:=" : NTwoCirColAssign,
-"&&:=" : TwoColAssign, "!&&:=" : NTwoColAssign
+"[" : Open_square, "]" : Close_square, "{" : Open_cur_bracket, "}" : Close_cur_bracket,
+"::" : After_label, ":=" : Assign, "*" : Mul, "/" : Div, "%" : Module, "/.": FDiv,
+"**":Pow, "**.":FPow, "+:=" : PlusAssign, "-:=" : MinusAssign,
+"*:=" : MultAssign, "/:=" : DivAssign, "/.:=" : FDivAssign, 
+"**:=" : PowAssign, "**.:=" : FPowAssign, "%:=" : ModuleAssign,
+"&:=" : BAndAssign, "~&:=" : BNAndAssign, "<<:=" : LShiftAssign,
+">>:=" : RShiftAssign, "|:=" : BorAssign, "~|:=" : BNorAssign,
+"^:=" : BXorAssign,"~^:=" : BNXorAssign, "||:=" : LorAssign,
+"!||:=" : LNorAssign, "^^:=" : LXorAssign, "!^^:=" : LNXorAssign,
+"&&:=" : LAndAssign, "!&&:=" : LNAndAssign
+
+
+%strings "buffer.clean();":"token.code=(buffer.length()==1)?Char:String;"
+{"([:ndq:]$write|""$write)*"} 
+
+%impl_additions "
+#include <quadmath> 
+size_t digit2int(char32_t ch)
+{
+size_t v =  ch - U'0';
+return (v<=9)? v:(v&0b1101'1111) - 7;
+};
+__float128  Lexer::build_float()
+{
+__float128 num;                                                                               
+num = int_value + fract_part*powq(10, num_of_digits);
+num = num*powq(10, sign_of_degree*exponent);
+return num;}"
 
 %numbers "int_value = 0; fract_part = 0; exponent = 0;sign_of_degree=1; num_of_digits = 0; is_float = false" : "if(is_float)
 {
